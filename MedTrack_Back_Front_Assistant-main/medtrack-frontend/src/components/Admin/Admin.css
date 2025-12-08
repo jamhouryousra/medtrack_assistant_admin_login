@@ -1,0 +1,253 @@
+/* ================================
+   ADMIN PAGE ONLY (pas global)
+================================ */
+.admin-page {
+  padding: 30px;
+  background-color: #f2f7fb;
+  min-height: 100vh;
+  font-family: "Segoe UI", sans-serif;
+}
+
+/* ================================
+   HEADER AVEC DÉCONNEXION
+================================ */
+.admin-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+.admin-page .page-title {
+  margin: 0;
+  color: #2a4b5f;
+  font-weight: 700;
+  font-size: 28px;
+}
+
+/* Bouton de déconnexion */
+.btn-logout {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 20px;
+  background: #EF4444;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-logout:hover {
+  background: #DC2626;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(239, 68, 68, 0.3);
+}
+
+.btn-logout svg {
+  flex-shrink: 0;
+}
+
+/* ================================
+   TITRES & MESSAGES
+================================ */
+.admin-page h1 {
+  text-align: center;
+  margin-bottom: 30px;
+  color: #2a4b5f;
+  font-weight: 700;
+}
+
+.admin-page h2 {
+  margin-bottom: 10px;
+  color: #2a4b5f;
+  font-weight: 600;
+}
+
+.admin-page h3 {
+  margin-bottom: 10px;
+  color: #2a4b5f;
+  font-weight: 600;
+}
+
+.admin-page .success-message {
+  text-align: center;
+  color: #28a745;
+  font-weight: bold;
+  margin-bottom: 15px;
+  padding: 12px;
+  background: #d4edda;
+  border-radius: 8px;
+}
+
+.admin-page .error-message {
+  text-align: center;
+  color: #d9534f;
+  font-weight: bold;
+  margin-bottom: 15px;
+  padding: 12px;
+  background: #f8d7da;
+  border-radius: 8px;
+}
+
+/* ================================
+   FORMULAIRES CÔTE À CÔTE
+================================ */
+.admin-page .forms-container {
+  display: flex;
+  gap: 25px;
+  margin-bottom: 40px;
+}
+
+.admin-page .form-box {
+  flex: 1;
+  background: #ffffff;
+  padding: 25px;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0, 80, 120, 0.15);
+  border: 1px solid #d8e8f1;
+}
+
+.admin-page .form-box form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.admin-page .form-box label {
+  font-weight: 600;
+  color: #3a5c72;
+}
+
+.admin-page .form-box input {
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #c4d8e4;
+  font-size: 14px;
+  background: #f8fcff;
+  color: black;
+  transition: 0.25s;
+}
+
+.admin-page .form-box input:focus {
+  border-color: #5dbbe0;
+  box-shadow: 0 0 6px rgba(0, 150, 200, 0.3);
+  outline: none;
+}
+
+/* ================================
+   TABLES
+================================ */
+.admin-page .table-section {
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0, 80, 120, 0.15);
+  border: 1px solid #d8e8f1;
+  overflow-x: auto;
+  margin-bottom: 25px;
+}
+
+.admin-page .table-container {
+  overflow-x: auto;
+}
+
+/* TABLE STYLING */
+.admin-page table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+}
+
+.admin-page table th {
+  background-color: #007bff;
+  color: white;
+  padding: 12px;
+  text-align: left;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.admin-page table td {
+  color: black;
+  padding: 10px;
+  border-bottom: 1px solid #e1e1e1;
+  white-space: normal;
+  
+}
+
+.admin-page table tr:nth-child(even) {
+  background-color: #f9fcff;
+}
+
+/* Fixe largeur de la colonne actions */
+.admin-page table th:last-child,
+.admin-page table td:last-child {
+  width: 190px;
+  text-align: center;
+}
+
+/* ================================
+   BOUTONS
+================================ */
+.admin-page button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: 0.25s;
+}
+
+.admin-page button:hover {
+  background-color: #0056b3;
+}
+
+/* Boutons spécifiques */
+.admin-page .btn-primary {
+  background-color: #007bff;
+}
+
+.admin-page .btn-primary:hover {
+  background-color: #0056b3;
+}
+
+.admin-page .btn-warning {
+  background-color: #ffc107;
+  color: black;
+}
+
+.admin-page .btn-warning:hover {
+  background-color: #e0a800;
+}
+
+.admin-page .btn-danger {
+  background-color: #dc3545;
+}
+
+.admin-page .btn-danger:hover {
+  background-color: #b02a37;
+}
+
+/* Actions alignées dans la table */
+.admin-page .actions-cell {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  white-space: nowrap;
+}
+
+/* ================================
+   RESPONSIVE
+================================ */
+@media (max-width: 1024px) {
+  .admin-page .forms-container {
+    flex-direction: column;
+  }
+}

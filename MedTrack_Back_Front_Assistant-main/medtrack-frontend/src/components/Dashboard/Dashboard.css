@@ -1,0 +1,213 @@
+.dashboard-page {
+  padding: 32px;
+  background: #F9FAFB;
+  min-height: 100vh;
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+.dashboard-title {
+  font-size: 32px;
+  font-weight: 700;
+  color: #1F2937;
+  margin: 0 0 32px 0;
+}
+
+/* STATISTIQUES - 3 CARDS EN LIGNE */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  margin-bottom: 40px;
+}
+
+.stat-card {
+  background: white;
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  transition: all 0.2s;
+}
+
+.stat-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.stat-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 16px;
+}
+
+.stat-label {
+  font-size: 14px;
+  color: #6B7280;
+  font-weight: 500;
+}
+
+/* ICÔNES GRISES DANS DES CARRÉS */
+.stat-icon-box {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  background: #F3F4F6;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+/* GRAND NOMBRE */
+.stat-number {
+  font-size: 48px;
+  font-weight: 700;
+  color: #1F2937;
+  margin: 8px 0;
+  line-height: 1;
+}
+
+/* FOOTER DES STATS */
+.stat-footer {
+  font-size: 14px;
+  color: #6B7280;
+  font-weight: 500;
+}
+
+.stat-footer-green {
+  color: #10B981;
+}
+
+.stat-footer-orange {
+  color: #F59E0B;
+}
+
+.stat-footer-blue {
+  color: #3B82F6;
+}
+
+/* SECTION RENDEZ-VOUS */
+.rendezvous-section {
+  background: white;
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.section-title {
+  font-size: 20px;
+  font-weight: 700;
+  color: #1F2937;
+  margin: 0 0 24px 0;
+}
+
+.rendezvous-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.rendezvous-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px;
+  background: #F9FAFB;
+  border-radius: 12px;
+  transition: all 0.2s;
+}
+
+.rendezvous-card:hover {
+  background: #F3F4F6;
+}
+
+.rendezvous-patient {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex: 1;
+}
+
+.patient-avatar-circle {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 16px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.rendezvous-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.rendezvous-patient-name {
+  font-size: 16px;
+  font-weight: 600;
+  color: #1F2937;
+}
+
+.rendezvous-medecin {
+  font-size: 14px;
+  color: #6B7280;
+}
+
+.rendezvous-time {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.time-value {
+  font-size: 18px;
+  font-weight: 600;
+  color: #1F2937;
+}
+
+.rendezvous-status {
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  text-transform: lowercase;
+}
+
+.rendezvous-check {
+  margin-left: 16px;
+}
+
+/* RESPONSIVE */
+@media (max-width: 1024px) {
+  .stats-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .dashboard-page {
+    padding: 16px;
+  }
+
+  .stat-number {
+    font-size: 36px;
+  }
+
+  .rendezvous-card {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .rendezvous-time {
+    width: 100%;
+    justify-content: space-between;
+  }
+}
