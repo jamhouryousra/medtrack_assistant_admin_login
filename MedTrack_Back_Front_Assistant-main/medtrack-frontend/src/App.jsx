@@ -8,7 +8,12 @@ import Rendezvous from './components/Rendezvous/Rendezvous';
 import Profil from './components/Profil/Profil';
 import Login from './components/Auth/Login';
 import Register from './components/Auth/Register';
-import Admin from './components/Admin/Admin';
+
+// ✅ ADMIN - Nouvelle structure avec sidebar
+import AdminLayout from './components/Admin/AdminLayout';
+import AdminDashboard from './components/Admin/AdminDashboard';
+import GestionMedecin from './components/Admin/GestionMedecin';
+import GestionAssistant from './components/Admin/GestionAssistant';
 
 // Composants Patient
 import PatientSidebar from './components/Patient/PatientSidebar';
@@ -19,7 +24,7 @@ import PatientAnalyses from './components/Patient/PatientAnalyses';
 import PatientConsultations from './components/Patient/PatientConsultations';
 import PatientProfile from './components/Patient/PatientProfile';
 
-// ✅ AJOUT : Import du NotificationProvider
+// ✅ NotificationProvider
 import { NotificationProvider } from './contexts/NotificationContext';
 
 import './App.css';
@@ -36,7 +41,7 @@ const ProtectedRoute = ({ children, allowedRoles }) => {
   
   if (allowedRoles && !allowedRoles.includes(user.role?.toUpperCase())) {
     if (user.role?.toUpperCase() === 'ADMIN') {
-      return <Navigate to="/admin" replace />;
+      return <Navigate to="/admin/dashboard" replace />;
     } else if (user.role?.toUpperCase() === 'PATIENT') {
       return <Navigate to="/patient/dashboard" replace />;
     } else {
@@ -116,15 +121,21 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
 
-          {/* Route ADMIN (pas de Sidebar/Header) */}
+          {/* ✅ ADMIN - Nouvelle structure avec AdminLayout + routes imbriquées */}
           <Route 
-            path="/admin/*" 
+            path="/admin" 
             element={
               <ProtectedRoute allowedRoles={['ADMIN']}>
-                <Admin />
+                <AdminLayout />
               </ProtectedRoute>
-            } 
-          />
+            }
+          >
+            {/* Routes imbriquées dans AdminLayout */}
+            <Route index element={<Navigate to="/admin/dashboard" replace />} />
+            <Route path="dashboard" element={<AdminDashboard />} />
+            <Route path="medecins" element={<GestionMedecin />} />
+            <Route path="assistants" element={<GestionAssistant />} />
+          </Route>
 
           {/* Routes PATIENT (avec PatientSidebar/PatientHeader) */}
           <Route 
