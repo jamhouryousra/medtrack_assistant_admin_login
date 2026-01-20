@@ -18,6 +18,31 @@ const DossierMedical = sequelize.define('DossierMedical', {
   description: {
     type: DataTypes.TEXT,
   },
+
+  statut_tabag: {
+    type: DataTypes.STRING,
+    allowNull: true,
+  },
+
+  pression_sanguine: {
+    type: DataTypes.STRING,
+    allowNull: true,
+  },
+
+  taux_glucose: {
+    type: DataTypes.STRING,
+    allowNull: true,
+  },
+
+  bmi: {
+    type: DataTypes.STRING,
+    allowNull: true,
+  },
+
+  maladie: {
+    type: DataTypes.STRING,
+    allowNull: true,
+  },
   id_patient: {
     type: DataTypes.INTEGER,
     allowNull: false,

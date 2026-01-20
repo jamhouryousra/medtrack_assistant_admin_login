@@ -60,6 +60,33 @@ class MedecinController {
       return res.status(500).json({ message: 'Erreur suppression médecin' });
     }
   }
+  static async getRendezVous(req, res) {
+  try {
+    const rdvs = await MedecinService.getMedecinRendezVous(req.params.id);
+    return res.json(rdvs);
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({ message: 'Erreur récupération rendez-vous du médecin' });
+  }
+}
+static async getDossiers(req, res) {
+  try {
+    const dossiers = await MedecinService.getMedecinDossiers(req.params.id);
+    return res.json(dossiers);
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({ message: 'Erreur récupération dossiers du médecin' });
+  }
+}
+static async getConsultations(req, res) {
+  try {
+    const consultations = await MedecinService.getMedecinConsultations(req.params.id);
+    return res.json(consultations);
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({ message: 'Erreur récupération consultations du médecin' });
+  }
+}
 }
 
 module.exports = MedecinController;

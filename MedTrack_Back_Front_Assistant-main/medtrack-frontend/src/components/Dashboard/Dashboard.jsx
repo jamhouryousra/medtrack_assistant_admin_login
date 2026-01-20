@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNotifications } from '../../contexts/NotificationContext'; // ← AJOUTÉ
 import './Dashboard.css';
 
 const Dashboard = () => {
@@ -13,13 +14,15 @@ const Dashboard = () => {
   const [rendezvousJour, setRendezvousJour] = useState([]);
   const [patients, setPatients] = useState([]);
   const [medecins, setMedecins] = useState([]);
+  const { refreshTrigger } = useNotifications(); // ← AJOUTÉ
 
+  // ✅ Recharger quand refreshTrigger change
   useEffect(() => {
     fetchStats();
     fetchPatients();
     fetchMedecins();
     fetchRendezvousJour();
-  }, []);
+  }, [refreshTrigger]); // ← refreshTrigger ajouté
 
   const fetchPatients = async () => {
     try {
@@ -60,9 +63,10 @@ const Dashboard = () => {
       const rendezvous = Array.isArray(rdvData) ? rdvData : rdvData.data || [];
 
       const today = new Date().toISOString().split('T')[0];
+      // ✅ Exclure les RDV annulés
       const rdvAujourdhui = rendezvous.filter(r => {
         const rdvDate = r.date_rdv?.split('T')[0];
-        return rdvDate === today;
+        return rdvDate === today && r.statut?.toUpperCase() !== 'ANNULE';
       });
       
       const confirmes = rdvAujourdhui.filter(r => 
@@ -93,9 +97,10 @@ const Dashboard = () => {
       const rendezvous = Array.isArray(data) ? data : data.data || [];
       
       const today = new Date().toISOString().split('T')[0];
+      // ✅ Exclure les RDV annulés
       const rdvAujourdhui = rendezvous.filter(r => {
         const rdvDate = r.date_rdv?.split('T')[0];
-        return rdvDate === today;
+        return rdvDate === today && r.statut?.toUpperCase() !== 'ANNULE';
       });
       
       // TRIER par heure croissante (09:00 → 10:00 → 11:00...)

@@ -1,0 +1,293 @@
+/* PatientAnalyses.css */
+
+.patient-analyses-page {
+  padding: 32px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.patient-analyses-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 32px;
+}
+
+.patient-analyses-title {
+  font-size: 32px;
+  font-weight: 700;
+  color: #1F2937;
+  margin: 0;
+}
+
+.patient-analyses-count {
+  font-size: 16px;
+  color: #6B7280;
+  background: #F3F4F6;
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-weight: 500;
+}
+
+/* Filtres */
+.patient-analyses-filters {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+}
+
+.patient-filter-label {
+  font-size: 15px;
+  color: #6B7280;
+  font-weight: 500;
+}
+
+.patient-filter-btn {
+  padding: 8px 20px;
+  border-radius: 8px;
+  border: 1px solid #E5E7EB;
+  background: white;
+  color: #6B7280;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.patient-filter-btn:hover {
+  background: #F9FAFB;
+  border-color: #D1D5DB;
+}
+
+.patient-filter-btn.active {
+  background: #4F7EFF;
+  color: white;
+  border-color: #4F7EFF;
+}
+
+/* Grille des analyses */
+.patient-analyses-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+  gap: 24px;
+}
+
+.patient-analyse-card {
+  background: white;
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  border: 1px solid #E5E7EB;
+  transition: all 0.2s;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.patient-analyse-card:hover {
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border-color: #4F7EFF;
+}
+
+.patient-analyse-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 64px;
+  height: 64px;
+  background: linear-gradient(135deg, #667EEA 0%, #764BA2 100%);
+  border-radius: 16px;
+  margin-bottom: 8px;
+}
+
+.patient-analyse-icon svg {
+  filter: brightness(0) invert(1);
+}
+
+.patient-analyse-content {
+  flex: 1;
+}
+
+.patient-analyse-name {
+  font-size: 18px;
+  font-weight: 700;
+  color: #1F2937;
+  margin: 0 0 12px 0;
+  line-height: 1.3;
+}
+
+.patient-analyse-type {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  color: #6B7280;
+  margin-bottom: 12px;
+}
+
+.patient-analyse-info-row {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.patient-analyse-date {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  color: #6B7280;
+}
+
+.patient-analyse-date-label {
+  font-weight: 500;
+}
+
+.patient-analyse-date-value {
+  font-weight: 600;
+  color: #374151;
+}
+
+.patient-analyse-statut {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 600;
+  width: fit-content;
+}
+
+.patient-analyse-status-disponible {
+  background: #D1FAE5;
+  color: #065F46;
+}
+
+.patient-analyse-status-attente {
+  background: #FEF3C7;
+  color: #92400E;
+}
+
+.patient-analyse-status-consulte {
+  background: #DBEAFE;
+  color: #1E40AF;
+}
+
+/* Actions */
+.patient-analyse-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid #E5E7EB;
+}
+
+.patient-analyse-btn {
+  padding: 10px 16px;
+  border-radius: 8px;
+  border: none;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.patient-analyse-btn-voir {
+  background: #4F7EFF;
+  color: white;
+}
+
+.patient-analyse-btn-voir:hover {
+  background: #3B5FCC;
+}
+
+.patient-analyse-btn-download {
+  background: #F3F4F6;
+  color: #374151;
+  border: 1px solid #E5E7EB;
+}
+
+.patient-analyse-btn-download:hover {
+  background: #E5E7EB;
+}
+
+.patient-analyse-waiting {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px;
+  background: #FEF3C7;
+  border-radius: 8px;
+  color: #92400E;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+/* État vide */
+.patient-empty-analyses {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 64px 32px;
+  background: #F9FAFB;
+  border-radius: 16px;
+  border: 2px dashed #D1D5DB;
+}
+
+.patient-empty-analyses svg {
+  margin-bottom: 16px;
+}
+
+.patient-empty-analyses p {
+  font-size: 16px;
+  color: #6B7280;
+  margin: 0;
+}
+
+/* Loading */
+.patient-analyses-loading {
+  text-align: center;
+  padding: 64px;
+  font-size: 16px;
+  color: #6B7280;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .patient-analyses-page {
+    padding: 16px;
+  }
+
+  .patient-analyses-title {
+    font-size: 24px;
+  }
+
+  .patient-analyses-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .patient-analyse-card {
+    padding: 20px;
+  }
+
+  .patient-analyses-filters {
+    gap: 8px;
+  }
+
+  .patient-filter-btn {
+    padding: 6px 14px;
+    font-size: 13px;
+  }
+}

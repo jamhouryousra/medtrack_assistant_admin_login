@@ -1,0 +1,444 @@
+.patient-appointments-page {
+  padding: 32px;
+  background: #F9FAFB;
+  min-height: 100vh;
+}
+
+.patient-appointments-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.patient-appointments-title {
+  font-size: 28px;
+  font-weight: 700;
+  color: #111827;
+  margin: 0;
+}
+
+.patient-btn-new-rdv {
+  background: #4F7EFF;
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.patient-btn-new-rdv:hover {
+  background: #3D6FE8;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(79, 126, 255, 0.3);
+}
+
+/* Filtres */
+.patient-rdv-filters {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 24px;
+  padding: 16px;
+  background: white;
+  border-radius: 12px;
+  border: 1px solid #E5E7EB;
+}
+
+.patient-filter-label {
+  font-size: 14px;
+  font-weight: 500;
+  color: #6B7280;
+}
+
+.patient-filter-btn {
+  background: transparent;
+  border: 1px solid #E5E7EB;
+  color: #6B7280;
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.patient-filter-btn:hover {
+  border-color: #4F7EFF;
+  color: #4F7EFF;
+}
+
+.patient-filter-btn.active {
+  background: #4F7EFF;
+  border-color: #4F7EFF;
+  color: white;
+}
+
+/* Liste des rendez-vous */
+.patient-rdv-container {
+  background: white;
+  border-radius: 12px;
+  padding: 24px;
+  border: 1px solid #E5E7EB;
+}
+
+.patient-rdv-item {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 20px;
+  background: #F9FAFB;
+  border-radius: 12px;
+  margin-bottom: 12px;
+  transition: all 0.2s;
+}
+
+.patient-rdv-item:hover {
+  background: #F3F4F6;
+  transform: translateX(4px);
+}
+
+.patient-rdv-item-icon {
+  flex-shrink: 0;
+}
+
+.patient-rdv-item-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.patient-rdv-item-doctor {
+  font-size: 16px;
+  font-weight: 600;
+  color: #111827;
+  margin-bottom: 4px;
+}
+
+.patient-rdv-item-type {
+  font-size: 14px;
+  color: #6B7280;
+}
+
+.patient-rdv-item-datetime {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 140px;
+}
+
+.patient-rdv-item-date,
+.patient-rdv-item-time {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  color: #374151;
+}
+
+.patient-rdv-item-status {
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 600;
+  min-width: 100px;
+  text-align: center;
+}
+
+.patient-status-confirmed {
+  background: #D1FAE5;
+  color: #065F46;
+}
+
+.patient-status-completed {
+  background: #DBEAFE;
+  color: #1E40AF;
+}
+
+.patient-status-cancelled {
+  background: #FEE2E2;
+  color: #991B1B;
+}
+
+.patient-status-pending {
+  background: #FEF3C7;
+  color: #92400E;
+}
+
+.patient-rdv-item-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.patient-action-btn {
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  border: 1px solid;
+}
+
+.patient-action-modify {
+  background: transparent;
+  border-color: #4F7EFF;
+  color: #4F7EFF;
+}
+
+.patient-action-modify:hover {
+  background: #4F7EFF;
+  color: white;
+}
+
+.patient-action-cancel {
+  background: transparent;
+  border-color: #EF4444;
+  color: #EF4444;
+}
+
+.patient-action-cancel:hover {
+  background: #EF4444;
+  color: white;
+}
+
+.patient-empty-rdv {
+  text-align: center;
+  padding: 64px 24px;
+  color: #9CA3AF;
+}
+
+.patient-empty-rdv svg {
+  margin-bottom: 16px;
+}
+
+.patient-empty-rdv p {
+  font-size: 16px;
+  margin: 0;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .patient-appointments-page {
+    padding: 20px;
+  }
+
+  .patient-appointments-header {
+    flex-direction: column;
+    gap: 16px;
+    align-items: stretch;
+  }
+
+  .patient-rdv-filters {
+    flex-wrap: wrap;
+  }
+
+  .patient-rdv-item {
+    flex-direction: column;
+    align-items: stretch;
+    text-align: center;
+  }
+
+  .patient-rdv-item-datetime {
+    flex-direction: row;
+    justify-content: center;
+  }
+
+  .patient-rdv-item-actions {
+    justify-content: center;
+  }
+}
+
+/* Modal Nouveau Rendez-vous */
+.patient-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 20px;
+}
+
+.patient-modal-content {
+  background: white;
+  border-radius: 16px;
+  width: 100%;
+  max-width: 600px;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+}
+
+.patient-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 24px;
+  border-bottom: 1px solid #E5E7EB;
+}
+
+.patient-modal-title {
+  font-size: 20px;
+  font-weight: 600;
+  color: #111827;
+  margin: 0;
+}
+
+.patient-modal-close {
+  background: transparent;
+  border: none;
+  color: #6B7280;
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 8px;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.patient-modal-close:hover {
+  background: #F3F4F6;
+  color: #111827;
+}
+
+.patient-modal-form {
+  padding: 24px;
+}
+
+.patient-form-group {
+  margin-bottom: 20px;
+}
+
+.patient-form-label {
+  display: block;
+  font-size: 14px;
+  font-weight: 600;
+  color: #374151;
+  margin-bottom: 8px;
+}
+
+.patient-required {
+  color: #EF4444;
+}
+
+.patient-form-select,
+.patient-form-input,
+.patient-form-textarea {
+  width: 100%;
+  padding: 12px 16px;
+  border: 1px solid #D1D5DB;
+  border-radius: 8px;
+  font-size: 15px;
+  color: #111827;
+  transition: all 0.2s;
+  font-family: inherit;
+}
+
+/* Style spécial pour le filtre de spécialité */
+.patient-filter-select {
+  background: #F9FAFB;
+  border: 2px dashed #D1D5DB;
+  font-weight: 500;
+  color: #6B7280;
+}
+
+.patient-filter-select:focus {
+  background: white;
+  border-style: solid;
+  border-color: #4F7EFF;
+  color: #111827;
+}
+
+.patient-form-select:focus,
+.patient-form-input:focus,
+.patient-form-textarea:focus {
+  outline: none;
+  border-color: #4F7EFF;
+  box-shadow: 0 0 0 3px rgba(79, 126, 255, 0.1);
+}
+
+.patient-form-textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+.patient-form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.patient-modal-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 24px;
+  padding-top: 24px;
+  border-top: 1px solid #E5E7EB;
+}
+
+.patient-btn-cancel-modal {
+  flex: 1;
+  padding: 12px 24px;
+  background: transparent;
+  border: 1px solid #D1D5DB;
+  color: #6B7280;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.patient-btn-cancel-modal:hover {
+  background: #F3F4F6;
+  border-color: #9CA3AF;
+}
+
+.patient-btn-submit-modal {
+  flex: 1;
+  padding: 12px 24px;
+  background: #4F7EFF;
+  border: none;
+  color: white;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.patient-btn-submit-modal:hover {
+  background: #3D6FE8;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(79, 126, 255, 0.3);
+}
+
+/* Responsive Modal */
+@media (max-width: 768px) {
+  .patient-modal-content {
+    max-width: 100%;
+    border-radius: 16px 16px 0 0;
+    max-height: 95vh;
+  }
+
+  .patient-form-row {
+    grid-template-columns: 1fr;
+  }
+
+  .patient-modal-actions {
+    flex-direction: column;
+  }
+
+  .patient-btn-cancel-modal,
+  .patient-btn-submit-modal {
+    width: 100%;
+  }
+}

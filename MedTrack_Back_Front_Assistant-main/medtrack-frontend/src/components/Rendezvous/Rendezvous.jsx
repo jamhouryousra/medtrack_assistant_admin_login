@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNotifications } from '../../contexts/NotificationContext'; // ← AJOUTÉ
 import './Rendezvous.css';
 
 const Rendezvous = () => {
@@ -7,6 +8,7 @@ const Rendezvous = () => {
   const [medecins, setMedecins] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [editingRdv, setEditingRdv] = useState(null);
+  const { triggerNotificationRefresh } = useNotifications(); // ← AJOUTÉ
   const [formData, setFormData] = useState({
     id_patient: '',
     id_med: '',
@@ -27,7 +29,21 @@ const Rendezvous = () => {
     try {
       const response = await fetch('http://localhost:3000/api/rendezvous');
       const data = await response.json();
-      setRendezvous(Array.isArray(data) ? data : data.data || []);
+      const rdvArray = Array.isArray(data) ? data : data.data || [];
+      
+      // ✅ TRI PAR DATE DÉCROISSANTE (plus récents en premier)
+      const rdvTries = rdvArray.sort((a, b) => {
+        // Comparer les dates
+        const dateComparison = new Date(b.date_rdv) - new Date(a.date_rdv);
+        if (dateComparison !== 0) return dateComparison;
+        
+        // Si même date, comparer les heures
+        const heureA = a.heure_debut || '00:00:00';
+        const heureB = b.heure_debut || '00:00:00';
+        return heureB.localeCompare(heureA);
+      });
+      
+      setRendezvous(rdvTries);
     } catch (error) {
       console.error('Erreur:', error);
     }
@@ -82,6 +98,51 @@ const Rendezvous = () => {
     setShowModal(true);
   };
 
+  // ✅ NOUVEAU : Annuler un RDV directement
+  const handleAnnuler = async (rdvId) => {
+    if (!window.confirm('Êtes-vous sûr de vouloir annuler ce rendez-vous ?')) {
+      return;
+    }
+
+    try {
+      // Récupérer le RDV actuel
+      const rdvActuel = rendezvous.find(r => r.id_rdv === rdvId);
+      if (!rdvActuel) {
+        alert('Rendez-vous introuvable');
+        return;
+      }
+
+      // Préparer les données avec statut ANNULE
+      const rdvData = {
+        date_rdv: rdvActuel.date_rdv,
+        heure_debut: rdvActuel.heure_debut,
+        heure_fin: rdvActuel.heure_fin,
+        statut: 'ANNULE',
+        note: rdvActuel.note || ''
+      };
+
+      console.log('📤 Annulation RDV:', rdvData);
+
+      const response = await fetch(`http://localhost:3000/api/rendezvous/${rdvId}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(rdvData)
+      });
+
+      if (response.ok) {
+        alert('Rendez-vous annulé avec succès');
+        await fetchRendezvous();
+        triggerNotificationRefresh();
+      } else {
+        const error = await response.json();
+        alert('Erreur: ' + (error.message || 'Impossible d\'annuler le rendez-vous'));
+      }
+    } catch (error) {
+      console.error('Erreur:', error);
+      alert('Erreur lors de l\'annulation');
+    }
+  };
+
   const handleDelete = async (id) => {
     if (!window.confirm('Êtes-vous sûr de vouloir supprimer ce rendez-vous ?')) {
       return;
@@ -94,7 +155,8 @@ const Rendezvous = () => {
 
       if (response.ok) {
         alert('Rendez-vous supprimé avec succès');
-        fetchRendezvous();
+        await fetchRendezvous();
+        triggerNotificationRefresh(); // ← AJOUTÉ : Refresh notifications
       } else {
         alert('Erreur lors de la suppression');
       }
@@ -152,7 +214,8 @@ const Rendezvous = () => {
           statut: 'PLANIFIE',
           note: ''
         });
-        fetchRendezvous();
+        await fetchRendezvous();
+        triggerNotificationRefresh(); // ← AJOUTÉ : Refresh notifications
         alert(editingRdv ? 'Rendez-vous modifié avec succès' : 'Rendez-vous créé avec succès');
       } else {
         const error = await response.json();
@@ -243,6 +306,16 @@ const Rendezvous = () => {
                       >
                         Modifier
                       </button>
+                      {/* ✅ NOUVEAU : Bouton Annuler direct (seulement si pas déjà annulé) */}
+                      {rdv.statut?.toUpperCase() !== 'ANNULE' && (
+                        <button 
+                          className="btn-action btn-annuler"
+                          onClick={() => handleAnnuler(rdv.id_rdv)}
+                          style={{ background: '#FEF3C7', color: '#92400E' }}
+                        >
+                          Annuler
+                        </button>
+                      )}
                       <button 
                         className="btn-action btn-delete"
                         onClick={() => handleDelete(rdv.id_rdv)}
@@ -339,7 +412,7 @@ const Rendezvous = () => {
                 />
               </div>
 
-              {/* NOUVEAU: Dropdown Statut (seulement en mode édition) */}
+              {/* Dropdown Statut (seulement en mode édition) */}
               {editingRdv && (
                 <div className="form-group">
                   <label>Statut *</label>

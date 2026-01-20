@@ -1,17 +1,23 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useNotifications } from '../../contexts/NotificationContext'; // ← AJOUTÉ
-import './Header.css';
+import { useNotifications } from '../../contexts/NotificationContext';
+import './PatientHeader.css';
 
-const Header = ({ title, user }) => {
+const PatientHeader = ({ user }) => {
   const navigate = useNavigate();
   const [rdvCount, setRdvCount] = useState(0);
   const { refreshTrigger } = useNotifications(); // ← AJOUTÉ
 
+  const userStr = localStorage.getItem('user');
+  const currentUser = userStr ? JSON.parse(userStr) : user;
+  const patientId = currentUser?.id_patient;
+
   // ✅ Se déclenche au montage ET quand refreshTrigger change
   useEffect(() => {
-    fetchRdvCount();
-  }, [refreshTrigger]); // ← refreshTrigger ajouté
+    if (patientId) {
+      fetchRdvCount();
+    }
+  }, [patientId, refreshTrigger]); // ← refreshTrigger ajouté
 
   const fetchRdvCount = async () => {
     try {
@@ -19,14 +25,19 @@ const Header = ({ title, user }) => {
       const data = await response.json();
       const rendezvous = Array.isArray(data) ? data : data.data || [];
       
-      // Compter les RDV d'aujourd'hui (SANS les annulés)
-      const today = new Date().toISOString().split('T')[0];
-      const rdvToday = rendezvous.filter(r => {
-        const rdvDate = r.date_rdv?.split('T')[0];
-        return rdvDate === today && r.statut?.toUpperCase() !== 'ANNULE'; // ← AJOUTÉ
+      // Filtrer les RDV du patient pour les dates futures
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+      
+      const mesRdvFuturs = rendezvous.filter(r => {
+        const rdvDate = new Date(r.date_rdv);
+        rdvDate.setHours(0, 0, 0, 0);
+        return r.id_patient === patientId && 
+               rdvDate >= today &&
+               (r.statut?.toLowerCase() === 'confirmé' || r.statut?.toLowerCase() === 'planifie');
       });
       
-      setRdvCount(rdvToday.length);
+      setRdvCount(mesRdvFuturs.length);
     } catch (error) {
       console.error('Erreur:', error);
     }
@@ -38,27 +49,33 @@ const Header = ({ title, user }) => {
     navigate('/login');
   };
 
+  const getInitials = () => {
+    const nom = currentUser?.nom || '';
+    const prenom = currentUser?.prenom || '';
+    return `${nom.charAt(0)}${prenom.charAt(0)}`.toUpperCase();
+  };
+
   return (
-    <header className="header">
+    <header className="patient-header">
       {/* Barre de recherche */}
-      <div className="search-container">
-        <svg className="search-icon" width="20" height="20" viewBox="0 0 20 20" fill="none">
+      <div className="patient-search-container">
+        <svg className="patient-search-icon" width="20" height="20" viewBox="0 0 20 20" fill="none">
           <path d="M9 17A8 8 0 1 0 9 1a8 8 0 0 0 0 16zM18 18l-4-4" stroke="#9CA3AF" strokeWidth="2" strokeLinecap="round"/>
         </svg>
         <input 
           type="text" 
-          className="search-input" 
-          placeholder="Rechercher un patient..."
+          className="patient-search-input" 
+          placeholder="Rechercher un médecin, une analyse..."
         />
       </div>
 
       {/* Notifications et Profil */}
-      <div className="header-actions">
+      <div className="patient-header-actions">
         {/* Notifications */}
         <button 
-          className="notification-btn"
-          onClick={() => navigate('/rendezvous')}
-          title={`${rdvCount} rendez-vous aujourd'hui`}
+          className="patient-notification-btn"
+          onClick={() => navigate('/patient/appointments')}
+          title={`${rdvCount} rendez-vous à venir`}
         >
           <svg width="20" height="20" viewBox="0 0 20 20" fill="none" style={{ display: 'block' }}>
             <path 
@@ -77,23 +94,25 @@ const Header = ({ title, user }) => {
             />
           </svg>
           {rdvCount > 0 && (
-            <span className="notification-badge">{rdvCount}</span>
+            <span className="patient-notification-badge">{rdvCount}</span>
           )}
         </button>
 
         {/* Profil utilisateur */}
-        <div className="user-profile">
-          <div className="user-avatar">
-            {user?.nom?.charAt(0)}{user?.prenom?.charAt(0)}
+        <div className="patient-user-profile" onClick={() => navigate('/patient/profile')}>
+          <div className="patient-user-avatar">
+            {getInitials()}
           </div>
-          <div className="user-info">
-            <div className="user-name">{user?.prenom} {user?.nom}</div>
-            <div className="user-role">Assistant médical</div>
+          <div className="patient-user-info">
+            <div className="patient-user-name">
+              {currentUser?.prenom} {currentUser?.nom}
+            </div>
+            <div className="patient-user-role">Patient</div>
           </div>
         </div>
 
         {/* Bouton Déconnexion */}
-        <button className="btn-logout-header" onClick={handleLogout}>
+        <button className="patient-btn-logout-header" onClick={handleLogout}>
           Déconnexion
         </button>
       </div>
@@ -101,4 +120,4 @@ const Header = ({ title, user }) => {
   );
 };
 
-export default Header;
+export default PatientHeader;

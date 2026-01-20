@@ -4,8 +4,9 @@ const DossierService = require('../services/dossierService');
 class DossierController {
   static async create(req, res) {
     try {
-      const dossier = await DossierService.createDossier(req.body);
-      return res.status(201).json(dossier);
+      const result = await DossierService.createDossier(req.body);
+      if (result.error) return res.status(400).json({ message: result.error });
+      return res.status(201).json(result.dossier);
     } catch (err) {
       console.error(err);
       return res.status(500).json({ message: 'Erreur lors de la création du dossier médical' });
@@ -14,7 +15,7 @@ class DossierController {
 
   static async getAll(req, res) {
     try {
-      const dossiers = await DossierService.getAllDossiers();
+      const dossiers = await DossierService.getAllDossiers(req.query);
       return res.json(dossiers);
     } catch (err) {
       console.error(err);
@@ -25,9 +26,7 @@ class DossierController {
   static async getById(req, res) {
     try {
       const dossier = await DossierService.getDossierById(req.params.id);
-      if (!dossier) {
-        return res.status(404).json({ message: 'Dossier médical introuvable' });
-      }
+      if (!dossier) return res.status(404).json({ message: 'Dossier médical introuvable' });
       return res.json(dossier);
     } catch (err) {
       console.error(err);
@@ -37,11 +36,10 @@ class DossierController {
 
   static async update(req, res) {
     try {
-      const dossier = await DossierService.updateDossier(req.params.id, req.body);
-      if (!dossier) {
-        return res.status(404).json({ message: 'Dossier médical introuvable' });
-      }
-      return res.json(dossier);
+      const result = await DossierService.updateDossier(req.params.id, req.body);
+      if (result.notFound) return res.status(404).json({ message: 'Dossier médical introuvable' });
+      if (result.error) return res.status(400).json({ message: result.error });
+      return res.json(result.dossier);
     } catch (err) {
       console.error(err);
       return res.status(500).json({ message: 'Erreur lors de la mise à jour du dossier médical' });
@@ -50,10 +48,8 @@ class DossierController {
 
   static async delete(req, res) {
     try {
-      const ok = await DossierService.deleteDossier(req.params.id);
-      if (!ok) {
-        return res.status(404).json({ message: 'Dossier médical introuvable' });
-      }
+      const result = await DossierService.deleteDossier(req.params.id);
+      if (result.notFound) return res.status(404).json({ message: 'Dossier médical introuvable' });
       return res.json({ message: 'Dossier médical supprimé' });
     } catch (err) {
       console.error(err);

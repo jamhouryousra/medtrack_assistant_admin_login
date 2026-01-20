@@ -1,5 +1,5 @@
 // services/medecinService.js
-const { sequelize, Utilisateur, Medecin } = require('../models');
+const { sequelize, Utilisateur, Medecin, Patient,Assistant,RendezVous, DossierMedical, Consultation  } = require('../models');
 
 class MedecinService {
   static async createMedecin(data) {
@@ -102,6 +102,41 @@ class MedecinService {
       throw err;
     }
   }
+  static async getMedecinRendezVous(id_med) {
+  return RendezVous.findAll({
+    where: { id_med },
+    order: [
+      ['date_rdv', 'DESC'],
+      ['heure_debut', 'DESC'],
+    ],
+    include: [
+      { model: Patient, as: 'patient' },
+      { model: Assistant, as: 'assistant' },
+    ],
+  });
+}
+static async getMedecinDossiers(id_med) {
+  return DossierMedical.findAll({
+    where: { id_med },
+    order: [['id_dm', 'DESC']],
+    include: [
+      {
+        model: Patient,
+        as: 'patient',
+      },
+    ],
+  });
+}
+static async getMedecinConsultations(id_med) {
+  return Consultation.findAll({
+    where: { id_med },
+    order: [['date_cons', 'DESC']],
+    include: [
+      { model: Patient, as: 'patient' },
+      { model: DossierMedical, as: 'dossierMedical' },
+    ],
+  });
+}
 }
 
 module.exports = MedecinService;

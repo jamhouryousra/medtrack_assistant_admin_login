@@ -1,5 +1,5 @@
 // services/patientService.js
-const { sequelize, Utilisateur, Patient } = require('../models');
+const { sequelize, Utilisateur, Patient, RendezVous, Medecin, Assistant, DossierMedical,Consultation } = require('../models');
 
 class PatientService {
   static async createPatient(data) {
@@ -129,6 +129,45 @@ class PatientService {
       throw err;
     }
   }
+  static async getPatientRendezVous(id_patient) {
+  return RendezVous.findAll({
+    where: { id_patient },
+    order: [
+      ['date_rdv', 'DESC'],
+      ['heure_debut', 'DESC'],
+    ],
+    include: [
+      { model: Medecin, as: 'medecin' },
+      { model: Assistant, as: 'assistant' },
+    ],
+  });
+}
+static async getDossierComplet(id_patient) {
+  const patient = await Patient.findByPk(id_patient, {
+    include: {
+      model: Utilisateur,
+      as: 'utilisateur'
+    }
+  });
+  if (!patient) return null;
+
+  const dossier = await DossierMedical.findOne({
+    where: { id_patient }
+  });
+  if (!dossier) return null;
+
+  const consultations = await Consultation.findAll({
+    where: { id_patient },
+    order: [['date_cons', 'DESC']],
+    include: [{ model: Medecin, as: 'medecin' }]
+  });
+
+  return {
+    patient,
+    dossierMedical: dossier,
+    consultations
+  };
+}
 }
 
 module.exports = PatientService;
