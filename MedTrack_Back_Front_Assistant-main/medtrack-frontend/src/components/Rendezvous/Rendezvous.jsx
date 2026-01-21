@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useNotifications } from '../../contexts/NotificationContext'; // ← AJOUTÉ
+import { useNotifications } from '../../contexts/NotificationContext';
 import './Rendezvous.css';
 
 const Rendezvous = () => {
@@ -8,13 +8,12 @@ const Rendezvous = () => {
   const [medecins, setMedecins] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [editingRdv, setEditingRdv] = useState(null);
-  const { triggerNotificationRefresh } = useNotifications(); // ← AJOUTÉ
+  const { triggerNotificationRefresh } = useNotifications();
   const [formData, setFormData] = useState({
     id_patient: '',
     id_med: '',
     date_rdv: '',
     heure_debut: '',
-    heure_fin: '',
     statut: 'PLANIFIE',
     note: ''
   });
@@ -33,11 +32,9 @@ const Rendezvous = () => {
       
       // ✅ TRI PAR DATE DÉCROISSANTE (plus récents en premier)
       const rdvTries = rdvArray.sort((a, b) => {
-        // Comparer les dates
         const dateComparison = new Date(b.date_rdv) - new Date(a.date_rdv);
         if (dateComparison !== 0) return dateComparison;
         
-        // Si même date, comparer les heures
         const heureA = a.heure_debut || '00:00:00';
         const heureB = b.heure_debut || '00:00:00';
         return heureB.localeCompare(heureA);
@@ -84,6 +81,19 @@ const Rendezvous = () => {
     return now > rdvDateTime;
   };
 
+  // ✅ Fonction pour calculer heure_fin = heure_debut + 30 minutes
+  const calculateEndTime = (startTime) => {
+    if (!startTime) return '';
+    
+    const [hours, minutes] = startTime.split(':').map(Number);
+    const totalMinutes = hours * 60 + minutes + 30; // Ajouter 30 minutes
+    
+    const endHours = Math.floor(totalMinutes / 60) % 24; // Modulo 24 pour gérer minuit
+    const endMinutes = totalMinutes % 60;
+    
+    return `${String(endHours).padStart(2, '0')}:${String(endMinutes).padStart(2, '0')}`;
+  };
+
   const handleEdit = (rdv) => {
     setEditingRdv(rdv);
     setFormData({
@@ -91,7 +101,6 @@ const Rendezvous = () => {
       id_med: rdv.id_med || '',
       date_rdv: rdv.date_rdv || '',
       heure_debut: rdv.heure_debut?.substring(0, 5) || '',
-      heure_fin: rdv.heure_fin?.substring(0, 5) || '',
       statut: rdv.statut || 'PLANIFIE',
       note: rdv.note || ''
     });
@@ -105,14 +114,12 @@ const Rendezvous = () => {
     }
 
     try {
-      // Récupérer le RDV actuel
       const rdvActuel = rendezvous.find(r => r.id_rdv === rdvId);
       if (!rdvActuel) {
         alert('Rendez-vous introuvable');
         return;
       }
 
-      // Préparer les données avec statut ANNULE
       const rdvData = {
         date_rdv: rdvActuel.date_rdv,
         heure_debut: rdvActuel.heure_debut,
@@ -156,7 +163,7 @@ const Rendezvous = () => {
       if (response.ok) {
         alert('Rendez-vous supprimé avec succès');
         await fetchRendezvous();
-        triggerNotificationRefresh(); // ← AJOUTÉ : Refresh notifications
+        triggerNotificationRefresh();
       } else {
         alert('Erreur lors de la suppression');
       }
@@ -169,18 +176,19 @@ const Rendezvous = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     
-    // Récupérer l'id_assistant de l'utilisateur connecté
     const user = JSON.parse(localStorage.getItem('user') || '{}');
     const id_assistant = user.id_assistant || 1;
 
-    // Préparer les données avec heure_debut ET heure_fin (tous deux requis)
+    // ✅ CALCULER automatiquement heure_fin (+ 30 minutes)
+    const calculatedHeureFin = calculateEndTime(formData.heure_debut);
+
     const rdvData = {
       id_patient: parseInt(formData.id_patient),
       id_med: parseInt(formData.id_med),
       id_assistant: id_assistant,
       date_rdv: formData.date_rdv,
       heure_debut: formData.heure_debut + ':00',
-      heure_fin: formData.heure_fin + ':00',
+      heure_fin: calculatedHeureFin + ':00', // ← Calculé automatiquement
       statut: formData.statut || 'PLANIFIE',
       note: formData.note || ''
     };
@@ -210,12 +218,11 @@ const Rendezvous = () => {
           id_med: '',
           date_rdv: '',
           heure_debut: '',
-          heure_fin: '',
           statut: 'PLANIFIE',
           note: ''
         });
         await fetchRendezvous();
-        triggerNotificationRefresh(); // ← AJOUTÉ : Refresh notifications
+        triggerNotificationRefresh();
         alert(editingRdv ? 'Rendez-vous modifié avec succès' : 'Rendez-vous créé avec succès');
       } else {
         const error = await response.json();
@@ -228,7 +235,6 @@ const Rendezvous = () => {
   };
 
   const getStatutBadge = (statut, dateRdv, heureDebut) => {
-    // AUTO-TERMINER si le RDV est passé et statut = PLANIFIE
     let statutFinal = statut;
     if (statut?.toUpperCase() === 'PLANIFIE' && dateRdv && heureDebut) {
       if (isRdvPasse(dateRdv, heureDebut)) {
@@ -306,7 +312,6 @@ const Rendezvous = () => {
                       >
                         Modifier
                       </button>
-                      {/* ✅ NOUVEAU : Bouton Annuler direct (seulement si pas déjà annulé) */}
                       {rdv.statut?.toUpperCase() !== 'ANNULE' && (
                         <button 
                           className="btn-action btn-annuler"
@@ -402,15 +407,30 @@ const Rendezvous = () => {
                 </div>
               </div>
 
-              <div className="form-group">
-                <label>Heure fin *</label>
-                <input
-                  type="time"
-                  value={formData.heure_fin}
-                  onChange={(e) => setFormData({...formData, heure_fin: e.target.value})}
-                  required
-                />
-              </div>
+              {/* ✅ NOUVEAU : Afficher heure_fin calculée automatiquement */}
+              {formData.heure_debut && (
+                <div className="form-group">
+                  <label>Heure fin (calculée automatiquement)</label>
+                  <input
+                    type="text"
+                    value={`${calculateEndTime(formData.heure_debut)} (30 minutes de consultation)`}
+                    readOnly
+                    style={{ 
+                      backgroundColor: '#F3F4F6', 
+                      cursor: 'not-allowed',
+                      color: '#6B7280'
+                    }}
+                  />
+                  <small style={{ 
+                    color: '#6B7280', 
+                    fontSize: '13px', 
+                    marginTop: '4px', 
+                    display: 'block' 
+                  }}>
+                    💡 La durée de consultation est fixée à 30 minutes
+                  </small>
+                </div>
+              )}
 
               {/* Dropdown Statut (seulement en mode édition) */}
               {editingRdv && (
