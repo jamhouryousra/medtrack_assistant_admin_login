@@ -15,6 +15,15 @@ import AdminDashboard from './components/Admin/AdminDashboard';
 import GestionMedecin from './components/Admin/GestionMedecin';
 import GestionAssistant from './components/Admin/GestionAssistant';
 
+// ✅ MEDECIN - Nouvelle interface médecin
+import MedecinSidebar from './components/Medecin/MedecinSidebar';
+import MedecinDashboard from './components/Medecin/MedecinDashboard';
+import MesRendezvous from './components/Medecin/MesRendezvous';
+import MesPatients from './components/Medecin/MesPatients';
+import Consultations from './components/Medecin/Consultations';
+import PredictionsIA from './components/Medecin/PredictionsIA.jsx';
+import ProfilMedecin from './components/Medecin/ProfilMedecin';
+
 // Composants Patient
 import PatientSidebar from './components/Patient/PatientSidebar';
 import PatientHeader from './components/Patient/PatientHeader';
@@ -40,8 +49,11 @@ const ProtectedRoute = ({ children, allowedRoles }) => {
   }
   
   if (allowedRoles && !allowedRoles.includes(user.role?.toUpperCase())) {
+    // Redirection selon le rôle de l'utilisateur
     if (user.role?.toUpperCase() === 'ADMIN') {
       return <Navigate to="/admin/dashboard" replace />;
+    } else if (user.role?.toUpperCase() === 'MEDECIN') {
+      return <Navigate to="/medecin/dashboard" replace />;
     } else if (user.role?.toUpperCase() === 'PATIENT') {
       return <Navigate to="/patient/dashboard" replace />;
     } else {
@@ -74,6 +86,40 @@ const AssistantLayout = () => {
             <Route path="rendezvous" element={<Rendezvous />} />
             <Route path="profil" element={<Profil />} />
             <Route path="*" element={<Navigate to="/dashboard" replace />} />
+          </Routes>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+// ✅ Layout pour le Médecin (avec MedecinSidebar + Header)
+const MedecinLayout = () => {
+  const userStr = localStorage.getItem('user');
+  const user = userStr ? JSON.parse(userStr) : {
+    nom: 'Médical',
+    prenom: 'Dr.',
+    role: 'MEDECIN',
+    email: 'medecin@medtrack.fr',
+    specialite: 'Médecine Générale'
+  };
+
+  return (
+    <div className="app-container">
+      <MedecinSidebar />
+      <div className="main-content">
+        <Header user={user} />
+        <div className="page-content">
+          <Routes>
+            <Route path="dashboard" element={<MedecinDashboard />} />
+            <Route path="rendez-vous" element={<MesRendezvous />} />
+            <Route path="patients" element={<MesPatients />} />
+            <Route path="consultations" element={<Consultations />} />
+            <Route path="consultations/new/:patientId?" element={<Consultations />} />
+            <Route path="consultations/:id" element={<Consultations />} />
+            <Route path="predictions-ia" element={<PredictionsIA />} />
+            <Route path="profil" element={<ProfilMedecin />} />
+            <Route path="*" element={<Navigate to="/medecin/dashboard" replace />} />
           </Routes>
         </div>
       </div>
@@ -136,6 +182,16 @@ function App() {
             <Route path="medecins" element={<GestionMedecin />} />
             <Route path="assistants" element={<GestionAssistant />} />
           </Route>
+
+          {/* ✅ MEDECIN - Interface médecin avec sidebar spécifique */}
+          <Route 
+            path="/medecin/*" 
+            element={
+              <ProtectedRoute allowedRoles={['MEDECIN']}>
+                <MedecinLayout />
+              </ProtectedRoute>
+            } 
+          />
 
           {/* Routes PATIENT (avec PatientSidebar/PatientHeader) */}
           <Route 

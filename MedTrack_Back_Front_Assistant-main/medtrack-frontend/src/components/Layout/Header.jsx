@@ -11,7 +11,7 @@ const Header = ({ title, user }) => {
   // ✅ Se déclenche au montage ET quand refreshTrigger change
   useEffect(() => {
     fetchRdvCount();
-  }, [refreshTrigger]); // ← refreshTrigger ajouté
+  }, [refreshTrigger]);
 
   const fetchRdvCount = async () => {
     try {
@@ -88,7 +88,7 @@ const Header = ({ title, user }) => {
           </div>
           <div className="user-info">
             <div className="user-name">{user?.prenom} {user?.nom}</div>
-            <div className="user-role">Assistant médical</div>
+            <div className="user-role">{user?.role}</div>
           </div>
         </div>
 

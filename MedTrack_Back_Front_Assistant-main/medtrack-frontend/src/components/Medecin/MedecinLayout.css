@@ -1,0 +1,31 @@
+.medecin-container {
+    display: flex;
+    min-height: 100vh;
+    background-color: #f9fafb;
+  }
+  
+  .medecin-main {
+    flex: 1;
+    margin-left: 280px;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+  }
+  
+  .medecin-content {
+    flex: 1;
+    overflow-y: auto;
+  }
+  
+  /* Responsive */
+  @media (max-width: 768px) {
+    .medecin-main {
+      margin-left: 240px;
+    }
+  }
+  
+  @media (max-width: 640px) {
+    .medecin-main {
+      margin-left: 0;
+    }
+  }
