@@ -30,7 +30,7 @@ const Rendezvous = () => {
       const data = await response.json();
       const rdvArray = Array.isArray(data) ? data : data.data || [];
       
-      // ✅ TRI PAR DATE DÉCROISSANTE (plus récents en premier)
+      //  TRI PAR DATE DÉCROISSANTE (plus récents en premier)
       const rdvTries = rdvArray.sort((a, b) => {
         const dateComparison = new Date(b.date_rdv) - new Date(a.date_rdv);
         if (dateComparison !== 0) return dateComparison;
@@ -81,7 +81,7 @@ const Rendezvous = () => {
     return now > rdvDateTime;
   };
 
-  // ✅ Fonction pour calculer heure_fin = heure_debut + 30 minutes
+  // Fonction pour calculer heure_fin = heure_debut + 30 minutes
   const calculateEndTime = (startTime) => {
     if (!startTime) return '';
     
@@ -107,7 +107,7 @@ const Rendezvous = () => {
     setShowModal(true);
   };
 
-  // ✅ NOUVEAU : Annuler un RDV directement
+  //  NOUVEAU : Annuler un RDV directement
   const handleAnnuler = async (rdvId) => {
     if (!window.confirm('Êtes-vous sûr de vouloir annuler ce rendez-vous ?')) {
       return;
@@ -128,7 +128,7 @@ const Rendezvous = () => {
         note: rdvActuel.note || ''
       };
 
-      console.log('📤 Annulation RDV:', rdvData);
+      console.log(' Annulation RDV:', rdvData);
 
       const response = await fetch(`http://localhost:3000/api/rendezvous/${rdvId}`, {
         method: 'PUT',
@@ -179,7 +179,7 @@ const Rendezvous = () => {
     const user = JSON.parse(localStorage.getItem('user') || '{}');
     const id_assistant = user.id_assistant || 1;
 
-    // ✅ CALCULER automatiquement heure_fin (+ 30 minutes)
+    //  CALCULER automatiquement heure_fin (+ 30 minutes)
     const calculatedHeureFin = calculateEndTime(formData.heure_debut);
 
     const rdvData = {
@@ -193,7 +193,7 @@ const Rendezvous = () => {
       note: formData.note || ''
     };
 
-    console.log('📤 Envoi des données:', rdvData);
+    console.log(' Envoi des données:', rdvData);
 
     try {
       const url = editingRdv 
@@ -407,7 +407,7 @@ const Rendezvous = () => {
                 </div>
               </div>
 
-              {/* ✅ NOUVEAU : Afficher heure_fin calculée automatiquement */}
+              {/*  NOUVEAU : Afficher heure_fin calculée automatiquement */}
               {formData.heure_debut && (
                 <div className="form-group">
                   <label>Heure fin (calculée automatiquement)</label>
@@ -427,7 +427,7 @@ const Rendezvous = () => {
                     marginTop: '4px', 
                     display: 'block' 
                   }}>
-                    💡 La durée de consultation est fixée à 30 minutes
+                     La durée de consultation est fixée à 30 minutes
                   </small>
                 </div>
               )}
@@ -447,9 +447,9 @@ const Rendezvous = () => {
                     <option value="ANNULE">Annulé</option>
                   </select>
                   <small className="form-hint">
-                    {formData.statut === 'PLANIFIE' && '✅ Le rendez-vous est confirmé'}
-                    {formData.statut === 'TERMINE' && '🏁 Le patient a été consulté'}
-                    {formData.statut === 'ANNULE' && '❌ Le rendez-vous a été annulé'}
+                    {formData.statut === 'PLANIFIE' && ' Le rendez-vous est confirmé'}
+                    {formData.statut === 'TERMINE' && ' Le patient a été consulté'}
+                    {formData.statut === 'ANNULE' && ' Le rendez-vous a été annulé'}
                   </small>
                 </div>
               )}

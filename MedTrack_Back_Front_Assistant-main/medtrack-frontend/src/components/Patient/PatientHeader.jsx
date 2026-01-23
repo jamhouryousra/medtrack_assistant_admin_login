@@ -12,7 +12,7 @@ const PatientHeader = ({ user }) => {
   const currentUser = userStr ? JSON.parse(userStr) : user;
   const patientId = currentUser?.id_patient;
 
-  // ✅ Se déclenche au montage ET quand refreshTrigger change
+  //  Se déclenche au montage ET quand refreshTrigger change
   useEffect(() => {
     if (patientId) {
       fetchRdvCount();

@@ -56,7 +56,7 @@ const PatientDashboard = () => {
       const rdvAvenir = mesRdv.filter(r => {
         const rdvDate = new Date(r.date_rdv);
         rdvDate.setHours(0, 0, 0, 0);
-        // ✅ Exclure les RDV annulés
+        //  Exclure les RDV annulés
         return rdvDate >= today && r.statut?.toLowerCase() !== 'annule';
       });
 
@@ -71,7 +71,7 @@ const PatientDashboard = () => {
         rdvDate.setHours(0, 0, 0, 0);
         const statut = r.statut?.toLowerCase();
         
-        // ✅ Inclure les RDV passés terminés OU les RDV passés confirmés (auto-terminés)
+        //  Inclure les RDV passés terminés OU les RDV passés confirmés (auto-terminés)
         return rdvDate < today && 
                (statut === 'termine' || statut === 'planifie' || statut === 'confirmé') &&
                statut !== 'annule';
@@ -105,7 +105,7 @@ const PatientDashboard = () => {
       const mesRdvFuturs = rendezvous.filter(r => {
         const rdvDate = new Date(r.date_rdv);
         rdvDate.setHours(0, 0, 0, 0);
-        // ✅ Exclure les RDV annulés
+        //  Exclure les RDV annulés
         return r.id_patient === patientId && 
                rdvDate >= today && 
                r.statut?.toLowerCase() !== 'annule';

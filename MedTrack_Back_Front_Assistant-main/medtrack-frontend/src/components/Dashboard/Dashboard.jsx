@@ -16,7 +16,7 @@ const Dashboard = () => {
   const [medecins, setMedecins] = useState([]);
   const { refreshTrigger } = useNotifications(); // ← AJOUTÉ
 
-  // ✅ Recharger quand refreshTrigger change
+  //  Recharger quand refreshTrigger change
   useEffect(() => {
     fetchStats();
     fetchPatients();
@@ -63,7 +63,7 @@ const Dashboard = () => {
       const rendezvous = Array.isArray(rdvData) ? rdvData : rdvData.data || [];
 
       const today = new Date().toISOString().split('T')[0];
-      // ✅ Exclure les RDV annulés
+      //  Exclure les RDV annulés
       const rdvAujourdhui = rendezvous.filter(r => {
         const rdvDate = r.date_rdv?.split('T')[0];
         return rdvDate === today && r.statut?.toUpperCase() !== 'ANNULE';
@@ -97,7 +97,7 @@ const Dashboard = () => {
       const rendezvous = Array.isArray(data) ? data : data.data || [];
       
       const today = new Date().toISOString().split('T')[0];
-      // ✅ Exclure les RDV annulés
+      //  Exclure les RDV annulés
       const rdvAujourdhui = rendezvous.filter(r => {
         const rdvDate = r.date_rdv?.split('T')[0];
         return rdvDate === today && r.statut?.toUpperCase() !== 'ANNULE';

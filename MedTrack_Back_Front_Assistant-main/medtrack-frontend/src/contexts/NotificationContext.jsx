@@ -16,7 +16,7 @@ export const NotificationProvider = ({ children }) => {
 
   // Fonction pour déclencher un refresh des notifications
   const triggerNotificationRefresh = useCallback(() => {
-    console.log('🔔 Déclenchement refresh notifications');
+    console.log(' Déclenchement refresh notifications');
     setRefreshTrigger(prev => prev + 1);
   }, []);
 

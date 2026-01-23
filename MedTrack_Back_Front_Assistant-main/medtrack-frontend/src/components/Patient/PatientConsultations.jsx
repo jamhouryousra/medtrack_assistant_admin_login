@@ -22,12 +22,12 @@ const PatientConsultations = () => {
   const fetchConsultations = async () => {
     try {
       setLoading(true);
-      console.log('🔍 Récupération consultations pour patient:', patientId);
+      console.log(' Récupération consultations pour patient:', patientId);
       
       const response = await fetch(`http://localhost:3000/api/consultations?id_patient=${patientId}`);
       const data = await response.json();
       
-      console.log('📊 Consultations reçues:', data);
+      console.log('Consultations reçues:', data);
       
       const consultationsData = Array.isArray(data) ? data : data.data || [];
       
@@ -38,7 +38,7 @@ const PatientConsultations = () => {
       
       setConsultations(consultationsTries);
     } catch (error) {
-      console.error('❌ Erreur consultations:', error);
+      console.error(' Erreur consultations:', error);
     } finally {
       setLoading(false);
     }
@@ -50,7 +50,7 @@ const PatientConsultations = () => {
       const data = await response.json();
       setMedecins(Array.isArray(data) ? data : data.data || []);
     } catch (error) {
-      console.error('❌ Erreur médecins:', error);
+      console.error(' Erreur médecins:', error);
     }
   };
 

@@ -22,12 +22,12 @@ const PatientAppointments = () => {
   const user = userStr ? JSON.parse(userStr) : null;
   const patientId = realPatientId || user?.id_patient; // ← Utiliser realPatientId en priorité
 
-  console.log('👤 User from localStorage:', user);
-  console.log('🆔 Patient ID from localStorage:', user?.id_patient);
-  console.log('🆔 Real Patient ID (from API):', realPatientId);
-  console.log('🆔 Patient ID utilisé:', patientId);
+  console.log(' User from localStorage:', user);
+  console.log(' Patient ID from localStorage:', user?.id_patient);
+  console.log(' Real Patient ID (from API):', realPatientId);
+  console.log(' Patient ID utilisé:', patientId);
 
-  // ✅ Récupérer l'id_patient depuis l'API si absent du localStorage
+  //  Récupérer l'id_patient depuis l'API si absent du localStorage
   useEffect(() => {
     const fetchPatientId = async () => {
       if (!user?.id_user) return;
@@ -39,7 +39,7 @@ const PatientAppointments = () => {
       }
 
       try {
-        console.log('🔍 Recherche du patient avec id_user:', user.id_user);
+        console.log(' Recherche du patient avec id_user:', user.id_user);
         const response = await fetch('http://localhost:3000/api/patients');
         const patients = await response.json();
         const patientsData = Array.isArray(patients) ? patients : patients.data || [];
@@ -47,17 +47,17 @@ const PatientAppointments = () => {
         const currentPatient = patientsData.find(p => p.id_user === user.id_user);
         
         if (currentPatient) {
-          console.log('✅ Patient trouvé:', currentPatient);
+          console.log(' Patient trouvé:', currentPatient);
           setRealPatientId(currentPatient.id_patient);
           
           // Mettre à jour le localStorage pour les prochaines fois
           const updatedUser = { ...user, id_patient: currentPatient.id_patient };
           localStorage.setItem('user', JSON.stringify(updatedUser));
         } else {
-          console.error('❌ Aucun patient trouvé avec id_user:', user.id_user);
+          console.error(' Aucun patient trouvé avec id_user:', user.id_user);
         }
       } catch (error) {
-        console.error('❌ Erreur lors de la récupération du patient:', error);
+        console.error(' Erreur lors de la récupération du patient:', error);
       }
     };
 
@@ -78,17 +78,17 @@ const PatientAppointments = () => {
 
   const fetchMedecins = async () => {
     try {
-      console.log('🔵 Fetching médecins...');
+      console.log('Fetching médecins...');
       const response = await fetch('http://localhost:3000/api/medecins');
       const data = await response.json();
-      console.log('📊 Médecins reçus:', data);
-      console.log('📊 Nombre de médecins:', data.length);
+      console.log(' Médecins reçus:', data);
+      console.log(' Nombre de médecins:', data.length);
       if (data.length > 0) {
-        console.log('📊 Premier médecin:', data[0]);
+        console.log(' Premier médecin:', data[0]);
       }
       setMedecins(Array.isArray(data) ? data : data.data || []);
     } catch (error) {
-      console.error('❌ Erreur médecins:', error);
+      console.error(' Erreur médecins:', error);
     }
   };
 
@@ -96,7 +96,7 @@ const PatientAppointments = () => {
     return medecins.find(m => m.id_med === id);
   };
 
-  // ✅ Obtenir toutes les spécialités uniques
+  //  Obtenir toutes les spécialités uniques
   const getSpecialitesUniques = () => {
     const specialites = medecins
       .map(m => m.specialite)
@@ -105,7 +105,7 @@ const PatientAppointments = () => {
     return specialites.sort(); // Trier alphabétiquement
   };
 
-  // ✅ Filtrer les médecins par spécialité sélectionnée
+  //  Filtrer les médecins par spécialité sélectionnée
   const medecinsFiltres = filtreSpecialite === 'tous' 
     ? medecins 
     : medecins.filter(m => m.specialite === filtreSpecialite);
@@ -136,7 +136,7 @@ const PatientAppointments = () => {
     }
 
     try {
-      console.log('🚫 Annulation du RDV:', rdvId);
+      console.log(' Annulation du RDV:', rdvId);
       
       // Récupérer le RDV actuel pour avoir toutes les données
       const rdvActuel = rendezvous.find(r => r.id_rdv === rdvId);
@@ -155,7 +155,7 @@ const PatientAppointments = () => {
         note: rdvActuel.note || ''
       };
 
-      console.log('📤 Données envoyées:', rdvData);
+      console.log(' Données envoyées:', rdvData);
 
       const response = await fetch(`http://localhost:3000/api/rendezvous/${rdvId}`, {
         method: 'PUT',
@@ -163,32 +163,32 @@ const PatientAppointments = () => {
         body: JSON.stringify(rdvData)
       });
 
-      console.log('📥 Response status:', response.status);
-      console.log('📥 Response OK:', response.ok);
+      console.log(' Response status:', response.status);
+      console.log(' Response OK:', response.ok);
 
       if (response.ok) {
-        console.log('✅ RDV annulé avec succès');
+        console.log('RDV annulé avec succès');
         alert('Rendez-vous annulé avec succès');
         // Recharger la liste immédiatement
         await fetchRendezvous();
         triggerNotificationRefresh(); // ← AJOUTÉ : Rafraîchir les notifications
       } else {
         const errorText = await response.text();
-        console.error('❌ Erreur serveur:', errorText);
+        console.error(' Erreur serveur:', errorText);
         
         let errorMessage = 'Impossible d\'annuler le rendez-vous';
         try {
           const errorJson = JSON.parse(errorText);
           errorMessage = errorJson.message || errorMessage;
-          console.error('❌ Détails:', errorJson);
+          console.error('Détails:', errorJson);
         } catch {
           errorMessage = errorText || errorMessage;
         }
         
-        alert('❌ Erreur: ' + errorMessage);
+        alert('Erreur: ' + errorMessage);
       }
     } catch (error) {
-      console.error('❌ Erreur complète:', error);
+      console.error(' Erreur complète:', error);
       alert('Erreur lors de l\'annulation');
     }
   };
@@ -212,7 +212,7 @@ const PatientAppointments = () => {
   };
 
   const handleModifier = (rdv) => {
-    console.log('✏️ Modification du RDV:', rdv);
+    console.log('Modification du RDV:', rdv);
     setEditingRdv(rdv);
     setFiltreSpecialite('tous'); // ← Réinitialiser le filtre
     setFormData({
@@ -232,7 +232,7 @@ const PatientAppointments = () => {
     }));
   };
 
-  // ✅ Fonction pour calculer heure_fin = heure_debut + 30 minutes
+  // Fonction pour calculer heure_fin = heure_debut + 30 minutes
   const calculateEndTime = (startTime) => {
     if (!startTime) return '';
     
@@ -262,7 +262,7 @@ const PatientAppointments = () => {
       let rdvData;
       
       if (editingRdv) {
-        // ✅ MODE ÉDITION : Calculer heure_fin automatiquement
+        // MODE ÉDITION : Calculer heure_fin automatiquement
         const calculatedHeureFin = calculateEndTime(formData.heure_debut);
         
         rdvData = {
@@ -272,7 +272,7 @@ const PatientAppointments = () => {
           note: formData.notes || ''
         };
       } else {
-        // ✅ MODE CRÉATION : Calculer heure_fin automatiquement
+        //  MODE CRÉATION : Calculer heure_fin automatiquement
         const id_assistant = user?.id_assistant || 1;
         const calculatedHeureFin = calculateEndTime(formData.heure_debut);
         
@@ -282,14 +282,14 @@ const PatientAppointments = () => {
           id_assistant: id_assistant,
           date_rdv: formData.date_rdv,
           heure_debut: formData.heure_debut + ':00',
-          heure_fin: calculatedHeureFin + ':00', // ← Calculé automatiquement
+          heure_fin: calculatedHeureFin + ':00', // Calculé automatiquement
           statut: 'PLANIFIE',
           note: formData.notes || ''
         };
       }
 
-      console.log(editingRdv ? '✏️ Modification RDV:' : '💾 Création RDV:', rdvData);
-      console.log('📋 Patient ID utilisé:', patientId);
+      console.log(editingRdv ? ' Modification RDV:' : ' Création RDV:', rdvData);
+      console.log(' Patient ID utilisé:', patientId);
 
       const url = editingRdv
         ? `http://localhost:3000/api/rendezvous/${editingRdv.id_rdv}`
@@ -297,8 +297,8 @@ const PatientAppointments = () => {
       
       const method = editingRdv ? 'PUT' : 'POST';
 
-      console.log('🔗 URL:', url);
-      console.log('📤 Method:', method);
+      console.log(' URL:', url);
+      console.log(' Method:', method);
 
       const response = await fetch(url, {
         method: method,
@@ -306,34 +306,34 @@ const PatientAppointments = () => {
         body: JSON.stringify(rdvData)
       });
 
-      console.log('📥 Response status:', response.status);
-      console.log('📥 Response OK:', response.ok);
+      console.log(' Response status:', response.status);
+      console.log(' Response OK:', response.ok);
 
       if (response.ok) {
-        alert(editingRdv ? '✅ Rendez-vous modifié avec succès!' : '✅ Rendez-vous créé avec succès!');
+        alert(editingRdv ? ' Rendez-vous modifié avec succès!' : ' Rendez-vous créé avec succès!');
         handleCloseModal();
         await fetchRendezvous();
         triggerNotificationRefresh(); // ← AJOUTÉ : Rafraîchir les notifications
       } else {
         const errorText = await response.text();
-        console.error('❌ Erreur serveur (texte brut):', errorText);
-        console.error('❌ Status:', response.status);
+        console.error(' Erreur serveur (texte brut):', errorText);
+        console.error(' Status:', response.status);
         
         let errorMessage = 'Impossible de sauvegarder le rendez-vous';
         try {
           const errorJson = JSON.parse(errorText);
           errorMessage = errorJson.message || errorMessage;
-          console.error('❌ Détails JSON:', errorJson);
+          console.error('Détails JSON:', errorJson);
         } catch {
-          console.error('❌ Erreur non-JSON');
+          console.error(' Erreur non-JSON');
           errorMessage = errorText || errorMessage;
         }
         
-        alert('❌ Erreur: ' + errorMessage);
+        alert(' Erreur: ' + errorMessage);
       }
     } catch (error) {
-      console.error('❌ Erreur complète:', error);
-      alert('❌ Erreur lors de la sauvegarde du rendez-vous');
+      console.error(' Erreur complète:', error);
+      alert(' Erreur lors de la sauvegarde du rendez-vous');
     }
   };
 
@@ -351,7 +351,7 @@ const PatientAppointments = () => {
     return timeStr.substring(0, 5);
   };
 
-  // ✅ Fonction pour vérifier si un RDV est passé
+  //  Fonction pour vérifier si un RDV est passé
   const isRdvPasse = (dateRdv, heureDebut) => {
     if (!dateRdv || !heureDebut) return false;
     
@@ -361,7 +361,7 @@ const PatientAppointments = () => {
     return now > rdvDateTime;
   };
 
-  // ✅ Fonction pour obtenir le statut réel (auto-terminer si passé)
+  //  Fonction pour obtenir le statut réel (auto-terminer si passé)
   const getStatutReel = (rdv) => {
     const statutActuel = rdv.statut?.toUpperCase() || 'PLANIFIE';
     
@@ -375,7 +375,7 @@ const PatientAppointments = () => {
   };
 
   const getStatutClass = (statut, dateRdv, heureDebut) => {
-    // ✅ Vérifier si le RDV est passé
+    //  Vérifier si le RDV est passé
     if (dateRdv && heureDebut) {
       const now = new Date();
       const rdvDateTime = new Date(`${dateRdv}T${heureDebut}`);
@@ -394,7 +394,7 @@ const PatientAppointments = () => {
   };
 
   const getStatutLabel = (statut, dateRdv, heureDebut) => {
-    // ✅ Vérifier si le RDV est passé
+    //  Vérifier si le RDV est passé
     if (dateRdv && heureDebut) {
       const now = new Date();
       const rdvDateTime = new Date(`${dateRdv}T${heureDebut}`);
@@ -413,7 +413,7 @@ const PatientAppointments = () => {
   };
 
   const getStatutIcon = (statut, dateRdv, heureDebut) => {
-    // ✅ Vérifier si le RDV est passé
+    //  Vérifier si le RDV est passé
     if (dateRdv && heureDebut) {
       const now = new Date();
       const rdvDateTime = new Date(`${dateRdv}T${heureDebut}`);
@@ -470,12 +470,12 @@ const PatientAppointments = () => {
     const rdvDateTime = new Date(`${rdv.date_rdv}T${rdv.heure_debut}`);
     const isPasse = rdvDateTime < now;
     
-    // ✅ Les RDV passés sont considérés comme "terminés" même si statut = PLANIFIE
+    //  Les RDV passés sont considérés comme "terminés" même si statut = PLANIFIE
     if (filtreStatut === 'termine') {
       return s === 'termine' || (isPasse && s !== 'annule');
     }
     
-    // ✅ Les RDV confirmés ne montrent que les futurs
+    //  Les RDV confirmés ne montrent que les futurs
     if (filtreStatut === 'confirme') {
       return (s === 'confirmé' || s === 'planifie') && !isPasse;
     }
@@ -617,7 +617,7 @@ const PatientAppointments = () => {
             </div>
 
             <form onSubmit={handleSubmit} className="patient-modal-form">
-              {/* ✅ FILTRE PAR SPÉCIALITÉ */}
+              {/*  FILTRE PAR SPÉCIALITÉ */}
               <div className="patient-form-group">
                 <label className="patient-form-label">
                   Filtrer par spécialité

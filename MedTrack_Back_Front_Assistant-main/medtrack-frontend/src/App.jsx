@@ -9,13 +9,13 @@ import Profil from './components/Profil/Profil';
 import Login from './components/Auth/Login';
 import Register from './components/Auth/Register';
 
-// ✅ ADMIN - Nouvelle structure avec sidebar
+// ADMIN - Nouvelle structure avec sidebar
 import AdminLayout from './components/Admin/AdminLayout';
 import AdminDashboard from './components/Admin/AdminDashboard';
 import GestionMedecin from './components/Admin/GestionMedecin';
 import GestionAssistant from './components/Admin/GestionAssistant';
 
-// ✅ MEDECIN - Nouvelle interface médecin
+// MEDECIN - Nouvelle interface médecin
 import MedecinSidebar from './components/Medecin/MedecinSidebar';
 import MedecinDashboard from './components/Medecin/MedecinDashboard';
 import MesRendezvous from './components/Medecin/MesRendezvous';
@@ -33,7 +33,7 @@ import PatientAnalyses from './components/Patient/PatientAnalyses';
 import PatientConsultations from './components/Patient/PatientConsultations';
 import PatientProfile from './components/Patient/PatientProfile';
 
-// ✅ NotificationProvider
+//  NotificationProvider
 import { NotificationProvider } from './contexts/NotificationContext';
 
 import './App.css';
@@ -93,7 +93,7 @@ const AssistantLayout = () => {
   );
 };
 
-// ✅ Layout pour le Médecin (avec MedecinSidebar + Header)
+//  Layout pour le Médecin (avec MedecinSidebar + Header)
 const MedecinLayout = () => {
   const userStr = localStorage.getItem('user');
   const user = userStr ? JSON.parse(userStr) : {
@@ -160,14 +160,14 @@ const PatientLayout = () => {
 function App() {
   return (
     <BrowserRouter>
-      {/* ✅ WRAPPER avec NotificationProvider */}
+      {/* WRAPPER avec NotificationProvider */}
       <NotificationProvider>
         <Routes>
           {/* Routes publiques (Login / Register) */}
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
 
-          {/* ✅ ADMIN - Nouvelle structure avec AdminLayout + routes imbriquées */}
+          {/* ADMIN - Nouvelle structure avec AdminLayout + routes imbriquées */}
           <Route 
             path="/admin" 
             element={
@@ -183,7 +183,7 @@ function App() {
             <Route path="assistants" element={<GestionAssistant />} />
           </Route>
 
-          {/* ✅ MEDECIN - Interface médecin avec sidebar spécifique */}
+          {/*  MEDECIN - Interface médecin avec sidebar spécifique */}
           <Route 
             path="/medecin/*" 
             element={

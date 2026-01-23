@@ -35,7 +35,7 @@ export default function Admin() {
     fetchAssistants();
   }, []);
 
-  // ✅ FONCTION DE DÉCONNEXION
+  //  FONCTION DE DÉCONNEXION
   const handleLogout = () => {
     if (window.confirm("Voulez-vous vraiment vous déconnecter ?")) {
       // Nettoyer le localStorage
@@ -217,7 +217,7 @@ export default function Admin() {
 
   return (
     <div className="admin-page">
-      {/* ✅ HEADER AVEC BOUTON DÉCONNEXION */}
+      {/* HEADER AVEC BOUTON DÉCONNEXION */}
       <div className="admin-header">
         <h2 className="page-title">Admin - Gestion des Utilisateurs</h2>
         <button className="btn-logout" onClick={handleLogout}>

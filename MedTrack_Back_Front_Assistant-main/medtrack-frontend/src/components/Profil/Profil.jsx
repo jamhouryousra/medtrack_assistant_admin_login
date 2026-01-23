@@ -19,7 +19,7 @@ const Profil = () => {
   const loadUserData = () => {
     // Récupérer les données de l'utilisateur depuis localStorage
     const userData = JSON.parse(localStorage.getItem('user') || '{}');
-    console.log('📊 Données utilisateur chargées:', userData);
+    console.log('Données utilisateur chargées:', userData);
     
     setUser(userData);
     setFormData({
@@ -108,7 +108,7 @@ const Profil = () => {
       localStorage.setItem('user', JSON.stringify(updatedUser));
       setUser(updatedUser);
       
-      alert('✅ Profil mis à jour avec succès!');
+      alert(' Profil mis à jour avec succès!');
       setIsEditing(false);
       
       // Réinitialiser le mot de passe
@@ -121,7 +121,7 @@ const Profil = () => {
       
     } catch (error) {
       console.error('Erreur complète:', error);
-      alert('❌ Erreur: ' + error.message);
+      alert(' Erreur: ' + error.message);
     }
   };
 
@@ -215,7 +215,7 @@ const Profil = () => {
               onClick={(e) => {
                 e.preventDefault();
                 e.stopPropagation();
-                console.log('🔵 Mode édition activé');
+                console.log('Mode édition activé');
                 setIsEditing(true);
               }}
             >
@@ -243,7 +243,7 @@ const Profil = () => {
                 onClick={(e) => {
                   e.preventDefault();
                   e.stopPropagation();
-                  console.log('❌ Annulation');
+                  console.log(' Annulation');
                   setIsEditing(false);
                   loadUserData();
                 }}

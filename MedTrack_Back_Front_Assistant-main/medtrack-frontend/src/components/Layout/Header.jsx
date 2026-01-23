@@ -8,7 +8,7 @@ const Header = ({ title, user }) => {
   const [rdvCount, setRdvCount] = useState(0);
   const { refreshTrigger } = useNotifications(); // ← AJOUTÉ
 
-  // ✅ Se déclenche au montage ET quand refreshTrigger change
+  //  Se déclenche au montage ET quand refreshTrigger change
   useEffect(() => {
     fetchRdvCount();
   }, [refreshTrigger]);

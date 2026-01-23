@@ -22,7 +22,7 @@ const PatientProfile = () => {
   const loadUserData = async () => {
     // Récupérer les données de l'utilisateur depuis localStorage
     const userData = JSON.parse(localStorage.getItem('user') || '{}');
-    console.log('📊 Données utilisateur chargées:', userData);
+    console.log(' Données utilisateur chargées:', userData);
     
     setUser(userData);
 
@@ -44,7 +44,7 @@ const PatientProfile = () => {
         p.id_user === userData.id_user
       );
       
-      console.log('🔍 Patient trouvé:', currentPatient);
+      console.log(' Patient trouvé:', currentPatient);
       
       if (currentPatient) {
         setPatient(currentPatient);
@@ -63,7 +63,7 @@ const PatientProfile = () => {
           genre: currentPatient.genre || ''
         });
       } else {
-        console.warn('⚠️ Patient non trouvé dans la liste');
+        console.warn(' Patient non trouvé dans la liste');
         // Si on ne trouve pas le patient dans la liste, utiliser les données du localStorage
         setFormData({
           nom: userData.nom || '',
@@ -76,7 +76,7 @@ const PatientProfile = () => {
         });
       }
     } catch (error) {
-      console.error('❌ Erreur lors du chargement des données:', error);
+      console.error(' Erreur lors du chargement des données:', error);
       // En cas d'erreur, utiliser les données du localStorage
       setFormData({
         nom: userData.nom || '',
@@ -110,8 +110,8 @@ const PatientProfile = () => {
     const confirmUpdate = window.confirm('Êtes-vous sûr de vouloir mettre à jour votre profil ?');
     if (!confirmUpdate) return;
 
-    console.log('💾 Début de la sauvegarde...');
-    console.log('📋 Données du formulaire:', formData);
+    console.log(' Début de la sauvegarde...');
+    console.log(' Données du formulaire:', formData);
 
     try {
       // Récupérer tous les patients
@@ -130,7 +130,7 @@ const PatientProfile = () => {
         p.id_user === user.id_user
       );
       
-      console.log('🔍 Patient actuel trouvé:', currentPatient);
+      console.log(' Patient actuel trouvé:', currentPatient);
       
       if (!currentPatient) {
         alert('Impossible de trouver votre profil patient. Veuillez contacter l\'administrateur.');
@@ -151,7 +151,7 @@ const PatientProfile = () => {
         email: formData.email
       };
 
-      console.log('📤 Données envoyées au backend:', updateData);
+      console.log(' Données envoyées au backend:', updateData);
 
       // Appel API pour mettre à jour
       const response = await fetch(`http://localhost:3000/api/patients/${currentPatient.id_patient}`, {
@@ -162,11 +162,11 @@ const PatientProfile = () => {
         body: JSON.stringify(updateData)
       });
 
-      console.log('📥 Réponse du serveur:', response.status, response.statusText);
+      console.log(' Réponse du serveur:', response.status, response.statusText);
 
       if (!response.ok) {
         const errorText = await response.text();
-        console.error('❌ Erreur serveur:', errorText);
+        console.error(' Erreur serveur:', errorText);
         
         try {
           const errorJson = JSON.parse(errorText);
@@ -178,7 +178,7 @@ const PatientProfile = () => {
 
       // Succès!
       const result = await response.json();
-      console.log('✅ Résultat:', result);
+      console.log(' Résultat:', result);
       
       // Mettre à jour le localStorage
       const updatedUser = {
@@ -192,15 +192,15 @@ const PatientProfile = () => {
       localStorage.setItem('user', JSON.stringify(updatedUser));
       setUser(updatedUser);
       
-      alert('✅ Profil mis à jour avec succès!');
+      alert(' Profil mis à jour avec succès!');
       setIsEditing(false);
       
       // Recharger les données sans recharger toute la page
       await loadUserData();
       
     } catch (error) {
-      console.error('❌ Erreur complète:', error);
-      alert('❌ Erreur: ' + error.message);
+      console.error(' Erreur complète:', error);
+      alert(' Erreur: ' + error.message);
     }
   };
 
@@ -344,7 +344,7 @@ const PatientProfile = () => {
                 onClick={(e) => {
                   e.preventDefault();
                   e.stopPropagation();
-                  console.log('🔵 Mode édition activé');
+                  console.log(' Mode édition activé');
                   setIsEditing(true);
                 }}
               >
@@ -357,7 +357,7 @@ const PatientProfile = () => {
                   className="patient-profile-btn patient-profile-btn-save"
                   onClick={(e) => {
                     e.preventDefault();
-                    console.log('💾 Enregistrement...');
+                    console.log(' Enregistrement...');
                     // Déclencher manuellement la soumission du formulaire
                     document.getElementById('patient-profile-form').dispatchEvent(
                       new Event('submit', { cancelable: true, bubbles: true })
@@ -372,7 +372,7 @@ const PatientProfile = () => {
                   onClick={(e) => {
                     e.preventDefault();
                     e.stopPropagation();
-                    console.log('❌ Annulation');
+                    console.log(' Annulation');
                     setIsEditing(false);
                     loadUserData();
                   }}

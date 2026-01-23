@@ -30,14 +30,14 @@ export default function Login() {
         return;
       }
 
-      // ✅ Données utilisateur complètes (incluant id_patient, id_assistant, etc.)
+      //  Données utilisateur complètes (incluant id_patient, id_assistant, etc.)
       let userToStore = { ...data };
 
-      // ✅ RÉCUPÉRER L'ID SPÉCIFIQUE SELON LE RÔLE
+      //  RÉCUPÉRER L'ID SPÉCIFIQUE SELON LE RÔLE
       const userRole = role.toUpperCase();
 
       try {
-        // 🔵 SI PATIENT : Récupérer id_patient
+        //  SI PATIENT : Récupérer id_patient
         if (userRole === 'PATIENT') {
           console.log('👤 Récupération de id_patient...');
           const patientsResponse = await fetch('http://localhost:3000/api/patients');
@@ -47,10 +47,10 @@ export default function Login() {
           const currentPatient = patientsData.find(p => p.id_user === data.id_user);
           
           if (currentPatient) {
-            console.log('✅ Patient trouvé:', currentPatient);
+            console.log(' Patient trouvé:', currentPatient);
             userToStore.id_patient = currentPatient.id_patient;
           } else {
-            console.warn('⚠️ Patient non trouvé pour id_user:', data.id_user);
+            console.warn(' Patient non trouvé pour id_user:', data.id_user);
           }
         }
 
@@ -64,10 +64,10 @@ export default function Login() {
           const currentAssistant = assistantsData.find(a => a.id_user === data.id_user);
           
           if (currentAssistant) {
-            console.log('✅ Assistant trouvé:', currentAssistant);
+            console.log(' Assistant trouvé:', currentAssistant);
             userToStore.id_assistant = currentAssistant.id_assistant;
           } else {
-            console.warn('⚠️ Assistant non trouvé pour id_user:', data.id_user);
+            console.warn('Assistant non trouvé pour id_user:', data.id_user);
           }
         }
 
@@ -81,22 +81,22 @@ export default function Login() {
           const currentMedecin = medecinsData.find(m => m.id_user === data.id_user);
           
           if (currentMedecin) {
-            console.log('✅ Médecin trouvé:', currentMedecin);
+            console.log('Médecin trouvé:', currentMedecin);
             userToStore.id_med = currentMedecin.id_med;
             userToStore.specialite = currentMedecin.specialite;
           } else {
-            console.warn('⚠️ Médecin non trouvé pour id_user:', data.id_user);
+            console.warn('Médecin non trouvé pour id_user:', data.id_user);
           }
         }
       } catch (error) {
-        console.error('❌ Erreur lors de la récupération de l\'ID:', error);
+        console.error(' Erreur lors de la récupération de l\'ID:', error);
         // Continue quand même, l'ID sera récupéré plus tard si nécessaire
       }
 
       // Sauvegarder les infos de connexion avec l'ID complet
       localStorage.setItem('isLoggedIn', 'true');
       localStorage.setItem('token', data.token || 'fake-token');
-      localStorage.setItem('user', JSON.stringify(userToStore)); // ✅ Avec id_patient, id_assistant, ou id_med
+      localStorage.setItem('user', JSON.stringify(userToStore)); //  Avec id_patient, id_assistant, ou id_med
       
       console.log('💾 Données stockées:', userToStore);
 
@@ -110,7 +110,7 @@ export default function Login() {
       } else if (userRole === 'MEDECIN') {
         navigate('/medecin');
       } else if (userRole === 'PATIENT') {
-        navigate('/patient/dashboard'); // ✅ Corrigé pour Patient
+        navigate('/patient/dashboard');
       } else {
         navigate('/dashboard');
       }
